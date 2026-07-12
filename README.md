@@ -1,5 +1,7 @@
 # Face & Product Recognition (Open Source)
 
+[![Release](https://img.shields.io/github/v/release/Samukelo-Mkhonza/face-product-recognition?include_prereleases)](https://github.com/Samukelo-Mkhonza/face-product-recognition/releases)
+
 A face-recognition and product-recognition application built entirely on
 open-source models and libraries — no proprietary vision APIs (no AWS
 Rekognition, Azure Face, Google Vision, etc.).
@@ -29,6 +31,15 @@ phase. Planning docs land before implementation code, phase by phase.
 | [docs/TECH_STACK.md](docs/TECH_STACK.md) | Every library/model used, with license |
 | [docs/SETUP.md](docs/SETUP.md) | Local dev environment setup |
 | [docs/API.md](docs/API.md) | REST API reference |
+
+## Releases
+
+Versioning, changelog, and GitHub Releases are automated with
+[release-please](https://github.com/googleapis/release-please) based on
+[Conventional Commits](https://www.conventionalcommits.org/) — see
+[CONTRIBUTING.md](CONTRIBUTING.md#releases). See
+[Releases](https://github.com/Samukelo-Mkhonza/face-product-recognition/releases)
+for the changelog and downloadable tags once published.
 
 ## License
 

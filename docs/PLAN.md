@@ -135,7 +135,10 @@ with no manual setup steps beyond providing config.
       CODEOWNERS, dependabot.yml (added ahead of schedule, see repo root
       and `.github/`)
 - [ ] README demo GIF/screenshot
-- [ ] Tag `v0.1.0` release
+- [x] Automated releases (release-please): Conventional Commits drive
+      version bumps, `CHANGELOG.md`, and GitHub Releases — see
+      [CONTRIBUTING.md](../CONTRIBUTING.md#releases)
+- [ ] First automated release published (`v0.1.0`, via the release-please PR)
 
 ---
 

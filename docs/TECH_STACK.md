@@ -17,6 +17,7 @@ release.
 | Metadata storage | SQLite (stdlib) | Public domain | |
 | Vector index | FAISS | MIT | Meta AI |
 | Containerization | Docker | Apache-2.0 | tooling, not bundled in image |
+| Release automation | release-please (GitHub Action) | Apache-2.0 | tooling only, not bundled in image — generates CHANGELOG.md and GitHub Releases from Conventional Commits |
 
 ## Face pipeline
 
