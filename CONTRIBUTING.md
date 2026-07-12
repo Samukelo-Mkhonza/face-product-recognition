@@ -52,9 +52,27 @@ Or `docker compose up --build` to run everything at once.
 
 ## Commit style
 
-Plain, descriptive commit messages in the imperative mood (`Add product
-embedding cache`, not `Added`/`Adds`). No strict convention enforced beyond
-that.
+Commits on `main` must follow [Conventional Commits](https://www.conventionalcommits.org/)
+— releases and the changelog are generated automatically from these prefixes
+(see [Releases](#releases) below):
+
+- `feat: ...` — new feature (minor version bump)
+- `fix: ...` — bug fix (patch version bump)
+- `docs:`, `chore:`, `refactor:`, `perf:`, `test:`, `ci:`, `build:` — no
+  version bump, still included in the changelog under their own section
+- Add `!` after the type (e.g. `feat!:`) or a `BREAKING CHANGE:` footer for a
+  breaking change (major version bump)
+
+Use the imperative mood in the description (`add product embedding cache`,
+not `added`/`adds`).
+
+## Releases
+
+Releases are automated with [release-please](https://github.com/googleapis/release-please).
+Every push to `main` updates a standing "Release PR" that bumps the version
+and compiles `CHANGELOG.md` from Conventional Commit messages since the last
+release. Merging that PR tags the release and publishes it on GitHub —
+no manual version bumping or tagging required.
 
 ## Reporting bugs / requesting features
 
