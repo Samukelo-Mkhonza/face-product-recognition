@@ -32,6 +32,17 @@ phase. Planning docs land before implementation code, phase by phase.
 | [docs/SETUP.md](docs/SETUP.md) | Local dev environment setup |
 | [docs/API.md](docs/API.md) | REST API reference |
 
+## Deployment
+
+The UI (`frontend/`) deploys to GitHub Pages via
+[.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml) on
+every push to `main`. Because Pages only serves static files, the FastAPI
+backend must be hosted separately (Docker image already provided) — set the
+`VITE_API_BASE_URL` repository variable to its public URL so the Pages build
+points at it. [render.yaml](render.yaml) is a ready-to-use blueprint for
+deploying the backend on [Render](https://render.com) via *New → Blueprint*.
+See [docs/SETUP.md](docs/SETUP.md) for details.
+
 ## Releases
 
 Versioning, changelog, and GitHub Releases are automated with
