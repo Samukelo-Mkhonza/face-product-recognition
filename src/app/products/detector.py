@@ -17,7 +17,9 @@ def _model() -> YOLO:
     return YOLO("yolov8n.pt")
 
 
-def detect_products(image_bgr: np.ndarray, confidence_threshold: float = 0.25) -> list[DetectedObject]:
+def detect_products(
+    image_bgr: np.ndarray, confidence_threshold: float = 0.25
+) -> list[DetectedObject]:
     results = _model().predict(image_bgr, verbose=False, conf=confidence_threshold)
     detections = []
     for result in results:
