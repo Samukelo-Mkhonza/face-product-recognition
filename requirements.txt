@@ -13,7 +13,7 @@ faiss-cpu==1.9.0
 
 # Face pipeline (detection via DeepFace's mediapipe backend, embedding via Facenet512)
 mediapipe==0.10.18
-deepface==0.0.93
+deepface==0.0.100
 tf-keras==2.18.0
 tensorflow-cpu==2.18.0; sys_platform != "darwin"
 tensorflow-macos==2.18.0; sys_platform == "darwin"
