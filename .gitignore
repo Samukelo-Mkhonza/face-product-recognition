@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+build/
+dist/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Data & models (large binaries, don't commit)
+/data/
+/models/*.onnx
+/models/*.pt
+/models/*.pth
+*.index
+*.faiss
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
