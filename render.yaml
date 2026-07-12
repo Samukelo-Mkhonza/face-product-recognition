@@ -4,14 +4,10 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    plan: starter
+    plan: free
     healthCheckPath: /health
     envVars:
       - key: DATA_DIR
         value: /app/data
       - key: CORS_ORIGINS
         value: https://samukelo-mkhonza.github.io
-    disk:
-      name: data
-      mountPath: /app/data
-      sizeGB: 1

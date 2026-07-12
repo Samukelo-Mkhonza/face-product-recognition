@@ -63,8 +63,11 @@ builds the existing [Dockerfile](../Dockerfile). In the Render dashboard:
 2. Copy the service's `onrender.com` URL into the `VITE_API_BASE_URL`
    repository variable above and re-run the Pages workflow.
 
-The blueprint provisions a persistent disk at `/app/data` (enrolled
-faces/products), which requires a paid Render plan — drop the `disk:` block
-and use the free plan for a demo where that data can be lost on redeploy.
-Any other Docker host (Fly.io, a VM, Cloud Run) works the same way: build
-the image, expose port 8000, set `CORS_ORIGINS`.
+The blueprint uses Render's free plan: no persistent disk, so enrolled
+faces/products in `/app/data` reset on every redeploy/restart, and the
+service spins down after 15 min idle (first request after that is slow, or
+briefly errors while it wakes up). For persistence and no cold starts, add
+a paid `plan: starter` and a `disk:` block mounted at `/app/data` in
+[render.yaml](../render.yaml). Any other Docker host (Fly.io, a VM, Cloud
+Run) works the same way: build the image, expose port 8000, set
+`CORS_ORIGINS`.
