@@ -16,6 +16,9 @@ export class ApiError extends Error {
   }
 }
 
+const SERVICE_UNAVAILABLE_MESSAGE =
+  'The recognition service is unreachable right now. Please try again in a moment.'
+
 async function parseErrorDetail(response: Response): Promise<string> {
   try {
     const body = await response.json()
@@ -23,11 +26,19 @@ async function parseErrorDetail(response: Response): Promise<string> {
   } catch {
     // response wasn't JSON; fall through to status text
   }
+  if (response.status === 502 || response.status === 503 || response.status === 504) {
+    return SERVICE_UNAVAILABLE_MESSAGE
+  }
   return response.statusText || `Request failed with status ${response.status}`
 }
 
 async function postForm<T>(path: string, form: FormData): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, { method: 'POST', body: form })
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, { method: 'POST', body: form })
+  } catch {
+    throw new ApiError(0, SERVICE_UNAVAILABLE_MESSAGE)
+  }
   if (!response.ok) {
     throw new ApiError(response.status, await parseErrorDetail(response))
   }

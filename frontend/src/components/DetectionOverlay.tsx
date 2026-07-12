@@ -6,6 +6,7 @@ export interface DetectionBox {
   bbox: BBox
   label: string
   confidence: number | null
+  matched: boolean
 }
 
 interface DetectionOverlayProps {
@@ -23,15 +24,14 @@ export function DetectionOverlay({ imageUrl, boxes }: DetectionOverlayProps) {
 
   return (
     <div className="detection-overlay">
-      <img src={imageUrl} alt="Uploaded" onLoad={handleLoad} />
+      <img src={imageUrl} alt="Analyzed" onLoad={handleLoad} />
       {naturalSize &&
         boxes.map((box, index) => {
           const [x, y, w, h] = box.bbox
-          const matched = box.label !== 'Unknown'
           return (
             <div
               key={index}
-              className={`bbox${matched ? ' bbox-matched' : ' bbox-unmatched'}`}
+              className={`bbox${box.matched ? ' bbox-matched' : ' bbox-unmatched'}`}
               style={{
                 left: `${(x / naturalSize.width) * 100}%`,
                 top: `${(y / naturalSize.height) * 100}%`,
@@ -40,8 +40,9 @@ export function DetectionOverlay({ imageUrl, boxes }: DetectionOverlayProps) {
               }}
             >
               <span className="bbox-label">
+                <span className="bbox-index">{index + 1}</span>
                 {box.label}
-                {box.confidence != null ? ` (${(box.confidence * 100).toFixed(0)}%)` : ''}
+                {box.confidence != null ? ` · ${(box.confidence * 100).toFixed(0)}%` : ''}
               </span>
             </div>
           )
