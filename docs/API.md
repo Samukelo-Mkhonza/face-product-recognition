@@ -81,3 +81,8 @@ Detect and identify products in an image.
 - Interactive OpenAPI docs served at `/docs` once implemented.
 - No auth in the initial version (local/single-user use case) — flagged as a
   gap to revisit before any multi-user deployment.
+- **CORS:** enabled for the React dev server origin (`http://localhost:5173`
+  by default, configurable via the `CORS_ORIGINS` env var — see
+  [SETUP.md](SETUP.md)). In production, the React build is served as static
+  files by this same FastAPI app, so requests are same-origin and CORS
+  doesn't apply.

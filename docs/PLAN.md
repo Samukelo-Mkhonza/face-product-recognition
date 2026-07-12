@@ -23,11 +23,13 @@ Status legend: ✅ done · 🚧 in progress · ⬜ not started
 **Goal:** A contributor can clone the repo and get a working dev environment
 in under 10 minutes.
 
-- [ ] `pyproject.toml` / `requirements.txt` with pinned versions
+- [ ] `requirements.txt` + `requirements-dev.txt` with pinned versions
 - [ ] Dockerfile + `docker-compose.yml` for a reproducible environment
+      (backend API + frontend dev server)
 - [ ] Sample/test data: a handful of self-supplied face images for
-      enrollment testing, and a small open product-image set for the
-      catalog demo (no scraped or licensed-restricted images)
+      enrollment testing (see `tests/fixtures/faces/README.md`), and
+      synthetic generated images standing in for products so the test
+      suite needs no scraped or licensed-restricted images
 - [ ] Pre-commit hooks: `ruff` (lint) + `black` (format)
 
 **Acceptance:** `docker compose up` serves a health-check endpoint; running
@@ -38,8 +40,9 @@ the app locally with `pip install -r requirements.txt` works on a clean venv.
 **Goal:** Given an image, detect faces and identify them against an enrolled
 set, via a Python module (no API/UI yet).
 
-- [ ] Face detection using MediaPipe Face Detector
-- [ ] Face embedding via `face_recognition` (dlib ResNet)
+- [ ] Face detection using MediaPipe Face Detector (via DeepFace's
+      `mediapipe` detector backend)
+- [ ] Face embedding via DeepFace (Facenet512 backend)
 - [ ] Enrollment: store `{name, embedding}` locally (pickle/SQLite for now)
 - [ ] Matching: nearest-neighbor search over enrolled embeddings with a
       configurable distance threshold
@@ -81,16 +84,21 @@ time on held-out photos of the same items.
 **Acceptance:** `docker compose up` + `curl` against every endpoint above
 returns correct, documented responses; OpenAPI docs render at `/docs`.
 
-## Phase 5 — Demo Web UI ⬜
+## Phase 5 — React Web UI ⬜
 
 **Goal:** A non-technical user can try the app without curl.
 
-- [ ] Streamlit app: upload image → see bounding boxes + labels for both
-      faces and products
-- [ ] Simple enrollment/catalog-management screens
+- [ ] React + Vite (TypeScript) app: upload image → see bounding boxes +
+      labels for both faces and products, drawn over the image on a canvas
+- [ ] Enrollment/catalog-management screens (add face, add product)
+- [ ] Talks to the FastAPI service over HTTP (CORS enabled for local dev)
 
 **Acceptance:** a fresh user can enroll a face, add a product, and get a
 correct identification through the UI alone.
+
+> Originally planned as a Streamlit app; switched to React per project
+> requirements. In production, FastAPI serves the built React static
+> assets from the same container (see Phase 7).
 
 ## Phase 6 — Testing & CI ⬜
 
@@ -123,7 +131,9 @@ with no manual setup steps beyond providing config.
 
 - [ ] Re-verify every model/library license in TECH_STACK.md against what's
       actually bundled/downloaded at runtime
-- [ ] CONTRIBUTING.md, CODE_OF_CONDUCT.md
+- [x] CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, PR template,
+      CODEOWNERS, dependabot.yml (added ahead of schedule, see repo root
+      and `.github/`)
 - [ ] README demo GIF/screenshot
 - [ ] Tag `v0.1.0` release
 
@@ -135,6 +145,12 @@ with no manual setup steps beyond providing config.
   source but copyleft). Switch to an Apache-2.0 detector (e.g. RT-DETR) in
   Phase 3 if AGPL's copyleft terms are a problem for how this gets
   distributed. See [TECH_STACK.md](TECH_STACK.md).
+- **Face embedding library (resolved):** originally `dlib`/`face_recognition`,
+  switched to DeepFace (Facenet512 backend) because `dlib` has no official
+  Windows wheels and requires a C++ toolchain to build — a real risk to the
+  "clone and `pip install`" acceptance criterion in [SETUP.md](SETUP.md).
+  DeepFace is pure-Python + TensorFlow and supports `mediapipe` as a
+  detector backend, so the detect→embed→match architecture is unchanged.
 - **Face dataset for automated testing:** using only self-supplied images
   for now to avoid consent/licensing issues with public face datasets
   (e.g. LFW has its own usage terms). Revisit in Phase 1 if broader

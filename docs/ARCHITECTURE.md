@@ -4,13 +4,14 @@
 
 Two parallel recognition pipelines (face, product) share a common pattern:
 **detect → embed → match against a stored catalog of embeddings.** They're
-exposed through one FastAPI service and one Streamlit demo UI.
+exposed through one FastAPI service and one React (Vite + TypeScript) UI.
 
 ```
-                    ┌─────────────────────┐
-                    │   Streamlit Demo UI   │
+                    ┌──────────────────────┐
+                    │   React (Vite) UI     │
                     └──────────┬───────────┘
-                               │ HTTP
+                               │ HTTP (CORS in dev; same-origin in prod —
+                               │ FastAPI serves the built static assets)
                     ┌──────────▼───────────┐
                     │      FastAPI App      │
                     │  /faces/*  /products/* │
@@ -31,10 +32,13 @@ exposed through one FastAPI service and one Streamlit demo UI.
 ## Face pipeline
 
 1. **Detect** — MediaPipe Face Detector finds face bounding boxes in the
-   input frame.
-2. **Embed** — each face crop is aligned and passed through
-   `face_recognition`'s dlib ResNet model to get a 128-d embedding.
-3. **Match** — the embedding is compared (Euclidean distance) against all
+   input frame (via DeepFace's `mediapipe` detector backend).
+2. **Embed** — each face crop is aligned and passed through DeepFace's
+   Facenet512 model to get a 512-d embedding. (Originally planned as
+   `face_recognition`/dlib; swapped because dlib needs a C++ toolchain to
+   build on Windows and has no official wheels — see the "Open decisions"
+   note in [PLAN.md](PLAN.md).)
+3. **Match** — the embedding is compared (cosine distance) against all
    enrolled embeddings in FAISS; below-threshold nearest neighbor wins,
    otherwise the face is reported as "unknown."
 
@@ -71,8 +75,9 @@ embedding}`.
 - **Embedding + nearest-neighbor instead of a fixed classifier** for both
   faces and products means new people/products can be added at runtime
   without retraining — the core requirement for a usable recognition app.
-- **FastAPI + Streamlit split** keeps the programmatic API and the demo UI
-  decoupled; the UI is just another API client.
+- **FastAPI + React split** keeps the programmatic API and the demo UI
+  decoupled; the UI is just another API client, and either can be swapped
+  or consumed independently (e.g. a future mobile client).
 
 ## Non-goals (for now)
 

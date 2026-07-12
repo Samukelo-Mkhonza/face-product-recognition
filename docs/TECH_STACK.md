@@ -13,7 +13,7 @@ release.
 | Language | Python 3.11+ | PSF | |
 | API framework | FastAPI | MIT | |
 | ASGI server | Uvicorn | BSD-3-Clause | |
-| Demo UI | Streamlit | Apache-2.0 | |
+| Frontend | React 18 + Vite + TypeScript | MIT | build output served as static files by FastAPI in production |
 | Metadata storage | SQLite (stdlib) | Public domain | |
 | Vector index | FAISS | MIT | Meta AI |
 | Containerization | Docker | Apache-2.0 | tooling, not bundled in image |
@@ -22,15 +22,15 @@ release.
 
 | Component | Choice | License | Notes |
 |---|---|---|---|
-| Face detection | MediaPipe Face Detector | Apache-2.0 | Google |
-| Face embedding | `face_recognition` (dlib ResNet) | MIT (dlib: Boost) | CPU-friendly, 128-d embeddings |
+| Face detection | MediaPipe Face Detector | Apache-2.0 | Google; used via DeepFace's `mediapipe` detector backend |
+| Face embedding | DeepFace (Facenet512 backend) | MIT (DeepFace); TensorFlow: Apache-2.0 | CPU-friendly, 512-d embeddings, pure-Python install (no C++ toolchain needed, unlike dlib) |
 
 ## Product pipeline
 
 | Component | Choice | License | Notes |
 |---|---|---|---|
 | Object detection | YOLOv8n (Ultralytics) | **AGPL-3.0** | See "License flag" below |
-| Product embedding | CLIP `ViT-B/32` (OpenAI) | MIT (code); model weights released for research **and** general use | |
+| Product embedding | CLIP `ViT-B/32` (OpenAI weights) | MIT (code); model weights released for research **and** general use | loaded via `open_clip_torch` (MIT) — a pip-installable, actively maintained package that ships the same OpenAI-pretrained `ViT-B-32` weights, rather than installing OpenAI's `clip` package from GitHub directly |
 
 ## License flag: YOLOv8 (AGPL-3.0)
 
@@ -48,8 +48,11 @@ as an open decision in [PLAN.md](PLAN.md).
 
 - AWS Rekognition, Azure Face API, Google Cloud Vision — proprietary, paid,
   closed-source.
-- `dlib`'s own face-recognition CNN models are fine (used above); avoiding
-  any vendor SDK that requires an API key/billing account.
+- Any vendor SDK that requires an API key/billing account.
+- `dlib`/`face_recognition` — open source, but dropped for a practical
+  reason, not a licensing one: no official Windows wheels, requires CMake
+  + a C++ toolchain to build from source. See the face-embedding row above
+  and [PLAN.md](PLAN.md)'s "Open decisions" section.
 
 ## Dataset notes
 

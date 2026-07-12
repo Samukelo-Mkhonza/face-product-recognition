@@ -12,6 +12,9 @@ Rekognition, Azure Face, Google Vision, etc.).
   against a catalog using visual similarity (embedding search), so new
   products can be added without retraining a classifier.
 
+Backend is a FastAPI service (Python); the UI is a React + TypeScript app
+(`frontend/`) that talks to it over HTTP.
+
 ## Status
 
 🚧 Early stage — see [docs/PLAN.md](docs/PLAN.md) for the roadmap and current

@@ -1,0 +1,25 @@
+# Core API
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+pydantic-settings==2.7.1
+
+# Shared
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+Pillow==11.0.0
+faiss-cpu==1.9.0
+
+# Face pipeline (detection via DeepFace's mediapipe backend, embedding via Facenet512)
+mediapipe==0.10.18
+deepface==0.0.93
+tf-keras==2.18.0
+tensorflow-cpu==2.18.0; sys_platform != "darwin"
+tensorflow-macos==2.18.0; sys_platform == "darwin"
+
+# Product pipeline (YOLOv8n detection, CLIP embedding)
+ultralytics==8.3.55
+torch==2.5.1
+torchvision==0.20.1
+open_clip_torch==2.29.0
